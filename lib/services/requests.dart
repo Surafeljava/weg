@@ -19,6 +19,8 @@ class Requests {
         },
       );
 
+      print("http://${Shared.serverIp}:8080/users");
+
       if (response.statusCode == 200) {
         List<dynamic> users = json.decode(response.body);
         for (var user in users) {
