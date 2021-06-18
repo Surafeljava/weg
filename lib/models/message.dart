@@ -7,12 +7,12 @@ class Message {
 
   factory Message.fromJson(dynamic json) {
     return Message(
-        message: json['message'], time: json['time'], from: json['from']);
+        message: json["message"], time: json["time"], from: json["from"]);
   }
 
   Map<String, dynamic> toJson() => {
-        "name": message,
-        "ip": time,
+        "message": message,
+        "time": time,
         "from": from,
       };
 }

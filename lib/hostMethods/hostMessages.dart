@@ -33,10 +33,10 @@ class _HostMessagesState extends State<HostMessages> {
 
     String name =
         Provider.of<MainProvider>(context, listen: false).currentUserName;
-    String newIp = await Ipify.ipv4();
+    // String newIp = await Ipify.ipv4();
 
     // print("My IP: ${gt.ip}");
-    User userModel = new User(name: name, ip: newIp);
+    User userModel = new User(name: name, ip: "newIp");
 
     String responseCode = await requests.addToActiveList(userModel);
     print("Response Code: $responseCode");
@@ -146,7 +146,7 @@ class _HostMessagesState extends State<HostMessages> {
                             });
                           } else {
                             for (Socket cls in clients) {
-                              cls.write(message.toJson());
+                              cls.write(json.encode(message.toJson()));
                             }
                             setState(() {
                               messages.add(message);
@@ -212,8 +212,6 @@ class _HostMessagesState extends State<HostMessages> {
       (Uint8List data) async {
         await Future.delayed(Duration(seconds: 1));
         final message = String.fromCharCodes(data);
-        Message msg = Message.fromJson(message);
-        messages.add(msg);
         if (message == 'logout') {
           client.write('loging out!');
           await client.close();
@@ -224,8 +222,10 @@ class _HostMessagesState extends State<HostMessages> {
           for (Socket cls in registeredClients) {
             cls.write('$message');
           }
+          print("Response: $message");
+          print("Json Response:$message");
           setState(() {
-            messages.add(Message.fromJson(message));
+            messages.add(Message.fromJson(json.decode(message)));
           });
         }
       },

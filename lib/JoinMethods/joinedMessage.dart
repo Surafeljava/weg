@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -30,7 +31,7 @@ class _JoinedMessageState extends State<JoinedMessage> {
       (Uint8List data) {
         final serverResponse = String.fromCharCodes(data);
         setState(() {
-          messages.add(Message.fromJson(serverResponse));
+          messages.add(Message.fromJson(json.decode(serverResponse)));
         });
         print('Server: $serverResponse');
       },
@@ -128,7 +129,8 @@ class _JoinedMessageState extends State<JoinedMessage> {
                               message: messageController.text,
                               from: mainProvider.currentUserName,
                               time: "${now.hour}:${now.minute}");
-                          socket.write(message.toJson());
+                          socket.write(json.encode(message.toJson()));
+                          messageController.text = "";
                         }
                       },
                     )
